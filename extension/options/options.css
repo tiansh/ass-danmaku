@@ -1,0 +1,22 @@
+.detail-rows {
+  font: 15px message-box;
+  line-height: 20px;
+  text-shadow: 0 1px 1px #fefffe;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.detail-row {
+  display: contents;
+}
+
+.detail-row > label, .detail-row > .browser-style {
+  margin-top: 1px;
+  margin-bottom: 2px;
+  margin-inline-start: 6px;
+  margin-inline-end: 5px;
+}
+
+input[type="range"] {
+  margin: 0;
+}

@@ -1,0 +1,58 @@
+{
+
+  "manifest_version": 2,
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "1.0",
+  "default_locale": "en",
+
+  "icons": {
+    "48": "icon/danmaku.svg"
+  },
+
+  "permissions": [
+    "webRequest", "webRequestBlocking",
+    "tabs",
+    "downloads",
+    "storage",
+    "<all_urls>"
+  ],
+
+  "background": {
+    "scripts": [
+      "background/main.js",
+      "font/font.js",
+      "options/ext_options.js",
+      "danmaku/parser.js",
+      "danmaku/ass.js",
+      "danmaku/layout.js",
+      "download/download.js",
+      "background/acfun.js",
+      "background/bilibili.js" 
+    ]
+  },
+  
+  "page_action": {
+    "browser_style": true,
+    "default_popup": "popup/popup.html",
+    "default_title": "__MSG_extensionButtonTitle__",
+    "default_icon": "icon/danmaku.svg"
+  },
+
+  "options_ui": {
+    "browser_style": true,
+    "page": "options/options.html"
+  },
+
+  "web_accessible_resources": [
+    "download/danmaku.ass"
+  ],
+
+  "applications": {
+    "gecko": {
+      "id": "{d9a7d273-90af-49c2-9379-887fe4848372}",
+      "strict_min_version": "57.0a1"
+    }
+  }
+
+}

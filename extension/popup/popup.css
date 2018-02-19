@@ -1,0 +1,12 @@
+/*  I don't know why, but it seems that a simple transform make render happier */
+.panel {
+  transform: scale(1);
+  min-width: 240px;
+  max-width: 320px;
+  white-space: nowrap;
+}
+
+.panel .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
