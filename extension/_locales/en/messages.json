@@ -4,7 +4,7 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Download danmaku (video comments) in ASS format from AcFun & bilibili. Watch video on supported site, and danmaku download button will appear on the right of address bar.",
+    "message": "Download danmaku (video comments) in ASS format from AcFun, bilibili, and, Niconico. Watch video on supported site, and danmaku download button will appear on the right of address bar.",
     "description": "Description of the extension."
   },
   "extensionButtonTitle": {

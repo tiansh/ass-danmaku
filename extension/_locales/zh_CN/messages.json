@@ -1,9 +1,9 @@
 {
   "extensionName": {
-    "message": "ASS Danmaku"
+    "message": "ASS 弹幕"
   },
   "extensionDescription": {
-    "message": "从 AcFun & bilibili 以 ASS 格式下载弹幕。在支持的网站观看视频，下载按钮将会出现在地址栏右侧。"
+    "message": "从 AcFun、bilibili 和 Niconico 以 ASS 格式下载弹幕（视频评论）。在支持的网站观看视频，下载按钮将会出现在地址栏右侧。"
   },
   "extensionButtonTitle": {
     "message": "下载弹幕"

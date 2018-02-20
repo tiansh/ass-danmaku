@@ -24,6 +24,7 @@
      * @returns {boolean}
      */
     const danmakuFilter = danmaku => {
+      if (!danmaku) return false;
       if (!danmaku.text) return false;
       if (!danmaku.mode) return false;
       if (!danmaku.size) return false;
@@ -38,6 +39,39 @@
       const b = (rgb >>> 0) & 0xff;
       return { r, g, b };
     };
+
+    const parseNiconicoColor = mail => {
+      const colorTable = {
+        red: { r: 255, g: 0, b: 0 },
+        pink: { r: 255, g: 128, b: 128 },
+        orange: { r: 255, g: 184, b: 0 },
+        yellow: { r: 255, g: 255, b: 0 },
+        green: { r: 0, g: 255, b: 0 },
+        cyan: { r: 0, g: 255, b: 255 },
+        blue: { r: 0, g: 0, b: 255 },
+        purple: { r: 184, g: 0, b: 255 },
+        black: { r: 0, g: 0, b: 0 },
+      };
+      const defaultColor = { r: 255, g: 255, b: 255 };
+      const line = mail.toLowerCase().split(/\s+/);
+      const color = Object.keys(colorTable).find(color => line.includes(color));
+      return color ? colorTable[color] : defaultColor;
+    };
+
+    const parseNiconicoMode = mail => {
+      const line = mail.toLowerCase().split(/\s+/);
+      if (line.includes('ue')) return 'TOP';
+      if (line.includes('shita')) return 'BOTTOM';
+      return 'RTL';
+    };
+
+    const parseNiconicoSize = mail => {
+      const line = mail.toLowerCase().split(/\s+/);
+      if (line.includes('big')) return 36;
+      if (line.includes('small')) return 16;
+      return 25;
+    };
+
     /**
      * @param {string|ArrayBuffer} content
      * @return {{ cid: number, danmaku: Array<Danmaku> }}
@@ -85,6 +119,31 @@
         };
       }).filter(danmakuFilter);
       return { danmaku };
+    };
+
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ cid: number, danmaku: Array<Danmaku> }}
+     */
+    parser.niconico = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const data = JSON.parse(text);
+      const list = data.map(item => item.chat).filter(x => x);
+      const { thread } = list.find(comment => comment.thread);
+      const danmaku = list.map(comment => {
+        if (!comment.content || !(comment.vpos >= 0) || !comment.no) return null;
+        const { vpos, mail = '', content, no } = comment;
+        return {
+          text: content,
+          time: vpos / 100,
+          color: parseNiconicoColor(mail),
+          mode: parseNiconicoMode(mail),
+          size: parseNiconicoSize(mail),
+          bottom: false,
+          id: no,
+        };
+      }).filter(danmakuFilter);
+      return { thread, danmaku };
     };
 
     return parser;
