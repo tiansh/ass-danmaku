@@ -47,6 +47,10 @@
     "message": "Opacity",
     "description": "Danmaku may be semitransparent."
   },
+  "optionMaxOverlap": {
+    "message": "Maximum Overlap",
+    "description": "Set this option greater than 1 to allow overlap. A smaller value may cause some danmaku been discarded."
+  },
   "optionUnitSecond": {
     "message": "s",
     "description": "The unit for measuring time."
@@ -60,7 +64,7 @@
     "description": "The description inserted into ASS file header to describe the source of current file."
   },
   "downloadingTip": {
-    "message": "[Converting]",
+    "message": "[Converting] ",
     "description": "The texts in popup menu indicating downloading status."
   }
 }

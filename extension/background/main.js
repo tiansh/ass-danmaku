@@ -80,15 +80,21 @@
     }, { urls: match }, ['blocking']);
   };
 
+  const hidePageAction = tabId => {
+    browser.tabs.get(tabId).then(() => {
+      browser.pageAction.hide(tabId);
+    }, () => {});
+  };
+
   const revokePageAction = tabId => {
     context.delete(tabId);
-    browser.pageAction.hide(tabId);
+    hidePageAction(tabId);
   };
 
   const clearPageDanmaku = tabId => {
     const context = pageContext(tabId);
     context.danmakuList.length = 0;
-    browser.pageAction.hide(tabId);
+    hidePageAction(tabId);
   };
 
   browser.tabs.onUpdated.addListener((tabId, changeInfo) => {

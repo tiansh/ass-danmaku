@@ -35,6 +35,9 @@
   "optionTextOpacity": {
     "message": "不透明度"
   },
+  "optionMaxOverlap": {
+    "message": "彈幕最大層疊"
+  },
   "optionUnitSecond": {
     "message": "秒"
   },

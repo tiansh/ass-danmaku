@@ -172,14 +172,16 @@
     };
 
     const placeDanmaku = function (options) {
-      const normal = rtlCanvas(options), fixed = fixedCanvas(options);
+      const layers = options.maxOverlap;
+      const normal = Array(layers).fill(null).map(x => rtlCanvas(options));
+      const fixed = Array(layers).fill(null).map(x => fixedCanvas(options));
       return function (line) {
         line.fontSize = Math.round(line.size * options.fontSize);
         line.height = line.fontSize;
         line.width = line.width || window.font.text(options.fontFamily, line.text, line.fontSize) || 1;
 
         if (line.mode === 'RTL') {
-          const pos = normal(line);
+          const pos = normal.reduce((pos, layer) => pos || layer(line), null);
           if (!pos) return null;
           const { top, time } = pos;
           line.layout = {
@@ -196,7 +198,7 @@
             },
           };
         } else if (['TOP', 'BOTTOM'].includes(line.mode)) {
-          const pos = fixed(line);
+          const pos = fixed.reduce((pos, layer) => pos || layer(line), null);
           if (!pos) return null;
           const { top, time } = pos;
           line.layout = {

@@ -18,6 +18,7 @@ window.options = (function () {
    * @property {number} fixDuration duration of keep bottom / top danmaku appeared on screen (s)
    * @property {number} maxDelay // maxinum amount of allowed delay (s)
    * @property {number} textOpacity // opacity of text, in range of [0, 1]
+   * @property {number} maxOverlap // maxinum layers of danmaku
    */
 
   /** @type {ExtOption} */
@@ -47,6 +48,7 @@ window.options = (function () {
     { name: 'fixDuration', type: 'number', min: 0.1, predef: 4, step: 0.1 },
     { name: 'maxDelay', type: 'number', min: 0, predef: 6, step: 0.1 },
     { name: 'textOpacity', type: 'number', min: 10, max: 100, predef: 60 },
+    { name: 'maxOverlap', type: 'number', min: 1, max: 20, predef: 1 },
   ];
 
   const attrNormalize = (option, { name, type, min = -Infinity, max = Infinity, step = 1, predef, valid }) => {
@@ -67,7 +69,7 @@ window.options = (function () {
    * @param {ExtOption} option
    * @returns {ExtOption}
    */
-  const normalize = async function (option) {
+  const normalize = function (option) {
     return Object.assign({},
       ...attributes.map(attr => ({ [attr.name]: attrNormalize(option[attr.name], attr) }))
     );
