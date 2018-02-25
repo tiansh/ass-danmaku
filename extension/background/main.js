@@ -118,7 +118,6 @@
 
   const random = () => `${Math.random()}`.slice(2);
   const randomStuff = `danmaku-${Date.now()}-${random()}`;
-  const downloadDanmakuBaseUrl = browser.extension.getURL('download/danmaku.ass'); // `https://${randomStuff}.ass-danmaku.invalid.example.com/download/danmaku.ass`;
   const listDanmaku = messageExport(function listDanmaku(tabId) {
     const pageContext = context.get(tabId);
     if (!pageContext) return [];
@@ -150,43 +149,6 @@
 
   window.onRequest = onRequest;
 
-  // browser.webRequest.onBeforeRequest.addListener(async details => {
-  //   const { requestId, url } = details;
-  //   const params = new URLSearchParams(new URL(url).search);
-  //   const tabId = +params.get('tabId');
-  //   const danmakuId = params.get('danmakuId');
-  //   const danmaku = getDanmakuDetail(tabId, danmakuId);
-
-  //   const [options] = await Promise.all([
-  //     window.options.get(),
-  //   ]);
-
-  //   danmaku.layout = await window.danmaku.layout(danmaku.content, options);
-  //   const content = window.danmaku.ass(danmaku, options);
-  //   // const objectUrl = await window.download.url(content);
-  //   const encoder = new TextEncoder();
-  //   // Add a BOM to make some ass parser library happier
-  //   const bom = '\ufeff';
-  //   const encoded = encoder.encode(bom + content);
-  //   const blob = new Blob([encoded], { type: 'application/octet-stream' });
-  //   const objectUrl = URL.createObjectURL(blob);
-
-  //   return { redirectUrl: objectUrl };
-  // }, { urls: [downloadDanmakuBaseUrl + '?*'] }, ['blocking']);
-
 
 }());
 
-
-// cancel function returns an object
-// which contains a property `cancel` set to `true`
-
-
-// // add the listener,
-// // passing the filter argument and "blocking"
-// browser.webRequest.onBeforeRequest.addListener(
-//   function (requestDetails) {
-//     console.log(requestDetails);
-//     return {};
-//   }, { urls: ['*://*/*'] }, ['blocking']
-// );

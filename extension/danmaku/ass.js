@@ -39,7 +39,7 @@
       'Collisions: Normal',
       `PlayResX: ${info.playResX}`,
       `PlayResY: ${info.playResY}`,
-      'Timer: 10.0000',
+      'Timer: 100.0000',
       '',
       '[V4+ Styles]',
       'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding',

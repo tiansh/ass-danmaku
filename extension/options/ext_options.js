@@ -31,8 +31,8 @@ window.options = (function () {
     const sc = ['Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC'];
     const tc = ['Microsoft JhengHei', 'PingFang TC', 'Noto Sans CJK TC'];
     const ja = ['MS PGothic', 'Hiragino Kaku Gothic Pro', 'Noto Sans CJK JP'];
-    const lang = browser.i18n.getUILanguage;
-    const fonts = /^ja/.test(lang) ? ja : /^zh(?!.*Hans).*(?:TW|HK|MO|)/.test(lang) ? tc : sc;
+    const lang = browser.i18n.getUILanguage();
+    const fonts = /^ja/.test(lang) ? ja : /^zh(?!.*Hans).*(?:TW|HK|MO)/.test(lang) ? tc : sc;
     const chosed = fonts.find(font => window.font.valid(font)) || fonts[0];
     return chosed;
   };

@@ -1,44 +1,41 @@
 window.font = window.font || {};
 
-// Meansure width of text
+// Meansure using canvas
+window.font.textByCanvas = function () {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  return function (fontname, text, fontsize) {
+    context.font = `bold ${fontsize}px ${fontname}`;
+    return Math.ceil(context.measureText(text).width);
+  };
+};
+
+// Meansure using <div>
+window.font.textByDom = function () {
+  const container = document.createElement('div');
+  container.setAttribute('style', 'all: initial !important');
+  const content = document.createElement('div');
+  content.setAttribute('style', [
+    'top: -10000px', 'left: -10000px',
+    'width: auto', 'height: auto', 'position: absolute',
+  ].map(item => item + ' !important;').join(' '));
+  const active = () => { document.body.parentNode.appendChild(content); };
+  if (!document.body) document.addEventListener('DOMContentLoaded', active);
+  else active();
+  return (fontname, text, fontsize) => {
+    content.textContent = text;
+    content.style.font = `bold ${fontsize}px ${fontname}`;
+    return content.clientWidth;
+  };
+};
+
 window.font.text = (function () {
-
-  // Meansure using canvas
-  const calcWidthCanvas = function () {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    return function (fontname, text, fontsize) {
-      context.font = `bold ${fontsize}px ${fontname}`;
-      return Math.ceil(context.measureText(text).width);
-    };
-  };
-
-  // Meansure using <div>
-  const calcWidthDiv = function () {
-    const container = document.createElement('div');
-    container.setAttribute('style', 'all: initial !important');
-    const content = document.createElement('div');
-    content.setAttribute('style', [
-      'top: -10000px', 'left: -10000px',
-      'width: auto', 'height: auto', 'position: absolute',
-    ].map(item => item + ' !important;').join(' '));
-    const active = () => { document.body.parentNode.appendChild(content); };
-    if (!document.body) document.addEventListener('DOMContentLoaded', active);
-    else active();
-    return (fontname, text, fontsize) => {
-      content.textContent = text;
-      content.style.font = `bold ${fontsize}px ${fontname}`;
-      return content.clientWidth;
-    };
-  };
-
   // https://bugzilla.mozilla.org/show_bug.cgi?id=561361
   if (/linux/i.test(navigator.platform)) {
-    return calcWidthDiv();
+    return window.font.textByDom();
   } else {
-    return calcWidthCanvas();
+    return window.font.textByCanvas();
   }
-
 }());
 
 window.font.valid = (function () {
