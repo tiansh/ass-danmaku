@@ -16,7 +16,10 @@
     });
   });
 
-  window.onRequest(['https://comment.bilibili.com/*.xml'], async function (response, pageContext, { url }) {
+  window.onRequest([
+    'https://comment.bilibili.com/*.xml',
+    'https://api.bilibili.com/x/v1/dm/list.so?oid=*',
+  ], async function (response, pageContext, { url }) {
     const { cid, danmaku } = window.danmaku.parser.bilibili(response);
     if (danmaku.length === 0) return;
     const { tabId } = pageContext;
