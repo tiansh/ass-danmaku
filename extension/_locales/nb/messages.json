@@ -1,0 +1,70 @@
+{
+  "extensionName": {
+    "message": "ASS Danmaku",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Last ned danmaku (videokommentarer) i ASS-format fra AcFun, bilibili, og Niconico. Ved visning av videoer på støttet side vil en danmaku-nedlastingsknapp komme til syne til høyre for adressefeltet.",
+    "description": "Description of the extension."
+  },
+  "extensionButtonTitle": {
+    "message": "Last ned Danmaku",
+    "description": "Title of the extension button."
+  },
+  "optionResolutionTitle": {
+    "message": "Skjermoppløsning",
+    "description": "Screen Resolution affect the size of canvas for display subtitle. Lower resolution means larger font size."
+  },
+  "optionBottomReserved": {
+    "message": "Reservert bunnhøyde",
+    "description": "Reserved space at the bottom of the screen so that danmaku will not overlap subtitles."
+  },
+  "optionFontFamilyTitle": {
+    "message": "Skriftfamilie",
+    "description": "User may chose preferred font family. Danmaku will be styled using such font family, and the width of danmaku were calculated based on the given font family. Please note that your video player may override this option."
+  },
+  "optionFontSizeTitle": {
+    "message": "Forstørrelsesnivå",
+    "description": "The font size of danmaku is set by a default value on each site. Here we only provide a general zoom option."
+  },
+  "optionDanmakuSpace": {
+    "message": "Mellomrom mellom danmaku",
+    "description": "Keep some more space between each danmaku."
+  },
+  "optionNormalDuration": {
+    "message": "Varighet (normal)",
+    "description": "How long a danmaku will be displayed on screen. (for danmaku moving from right to left)"
+  },
+  "optionFixedDuration": {
+    "message": "Varighet (fastsatt)",
+    "description": "How long a danmaku will be displayed on screen. (for danmaku sticked on top or bottom)"
+  },
+  "optionTolerantDelay": {
+    "message": "Tolerant forsinkelse",
+    "description": "Danmaku may be delayed for better layout. This option describe the maximum delay allowed."
+  },
+  "optionTextOpacity": {
+    "message": "Dekkevne",
+    "description": "Danmaku may be semitransparent."
+  },
+  "optionMaxOverlap": {
+    "message": "Maksimal overlapping",
+    "description": "Set this option greater than 1 to allow overlap. A smaller value may cause some danmaku been discarded."
+  },
+  "optionUnitSecond": {
+    "message": "s",
+    "description": "The unit for measuring time."
+  },
+  "optionUnitPixel": {
+    "message": "px",
+    "description": "The unit for measuring subtitle canvas and font size."
+  },
+  "assOriginal": {
+    "message": "Generert av ASS Danmaku basert på $1",
+    "description": "The description inserted into ASS file header to describe the source of current file."
+  },
+  "downloadingTip": {
+    "message": "[Konverterer] ",
+    "description": "The texts in popup menu indicating downloading status."
+  }
+}
