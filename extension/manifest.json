@@ -29,7 +29,8 @@
       "download/download.js",
       "background/acfun.js",
       "background/bilibili.js",
-      "background/niconico.js"
+      "background/niconico.js",
+      "background/bahamut.js"
     ]
   },
   

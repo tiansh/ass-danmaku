@@ -43,7 +43,7 @@
    * @param {Array.<string>} match
    * @param {Function.<ArrayBuffer, Object>} callback
    */
-  const onRequest = function (match, callback) {
+  const onRequest = function (match, callback, { includeRequestBody = false }) {
     browser.webRequest.onBeforeRequest.addListener(details => {
       const { requestId, tabId, url } = details;
       const filter = browser.webRequest.filterResponseData(requestId);
@@ -72,12 +72,12 @@
         buffer = null;
         (async () => {
           const context = pageContext(tabId);
-          await callback(response, pageContext(tabId), { url });
+          await callback(response, pageContext(tabId), details);
           if (context.danmakuList.length) browser.pageAction.show(tabId);
         })();
       };
       return {};
-    }, { urls: match }, ['blocking']);
+    }, { urls: match }, ['blocking'].concat(includeRequestBody ? ['requestBody'] : []));
   };
 
   const hidePageAction = tabId => {

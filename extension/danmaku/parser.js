@@ -58,6 +58,12 @@
       return color ? colorTable[color] : defaultColor;
     };
 
+    const parseHexColor = color => {
+      const hex = color.replace(/[^0-9A-Za-z]/g, '').replace(/^(.)(.)(.)$/, '$0$0$1$1$2$2');
+      const [r, g, b] = hex.split(/(?=(?:..)*$)/).map(v => Number.parseInt(v, 16));
+      return { r, g, b };
+    };
+
     const parseNiconicoMode = mail => {
       const line = mail.toLowerCase().split(/\s+/);
       if (line.includes('ue')) return 'TOP';
@@ -144,6 +150,28 @@
         };
       }).filter(danmakuFilter);
       return { thread, danmaku };
+    };
+
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ danmaku: Array<Danmaku> }}
+     */
+    parser.bahamut = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const list = JSON.parse(text);
+      const danmaku = list.map(comment => {
+        if (!comment.text || !(comment.position >= 0)) return null;
+        const { text, time, color, position, size } = comment;
+        return {
+          text,
+          time: time / 10,
+          color: parseHexColor(color),
+          mode: ['RTL', 'BOTTOM', 'TOP'][position],
+          size: [16, 25, 36][size],
+          bottom: false,
+        };
+      }).filter(danmakuFilter);
+      return { danmaku };
     };
 
     return parser;
