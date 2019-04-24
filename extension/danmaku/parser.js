@@ -160,14 +160,17 @@
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
       const list = JSON.parse(text);
       const danmaku = list.map(comment => {
-        if (!comment.text || !(comment.position >= 0)) return null;
+        if (!comment) return null;
         const { text, time, color, position, size } = comment;
+        if (!text) return null;
+        if (comment.position < 0 || comment.position > 2) return null;
+        if (comment.size < 0 || comment.size > 2) return null;
         return {
           text,
           time: time / 10,
           color: parseHexColor(color),
-          mode: ['RTL', 'BOTTOM', 'TOP'][position],
-          size: [16, 25, 36][size],
+          mode: ['RTL', 'TOP', 'BOTTOM'][position],
+          size: [16, 24, 28][size],
           bottom: false,
         };
       }).filter(danmakuFilter);
