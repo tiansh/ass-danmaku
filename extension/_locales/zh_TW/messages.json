@@ -3,7 +3,7 @@
     "message": "ASS 彈幕"
   },
   "extensionDescription": {
-    "message": "從 AcFun、bilibili 和 Niconico 以 ASS 格式下載彈幕（視頻評論）。在支援的站點觀看視頻，下載按鈕將出現在導覽列右側。"
+    "message": "從 AcFun、bilibili、Niconico 等站以 ASS 格式下載彈幕（視頻評論）。在支援的站點觀看視頻，下載按鈕將出現在導覽列右側。"
   },
   "extensionButtonTitle": {
     "message": "下載彈幕"
