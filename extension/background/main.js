@@ -135,9 +135,11 @@
     ]);
     danmaku.layout = await window.danmaku.layout(danmaku.content, options);
     const content = window.danmaku.ass(danmaku, options);
-    const url = window.download.url(content);
+    const blob = window.download.blob(content);
+    const url = URL.createObjectURL(blob);
     const filename = window.download.filename(danmaku.meta.name, 'ass');
-    browser.downloads.download({ filename, url });
+    await window.download.download(url, filename);
+    URL.revokeObjectURL(url);
   });
 
   browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
