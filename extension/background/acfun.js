@@ -1,6 +1,6 @@
 ; (function () {
 
-  window.onRequest(['http://www.acfun.cn/v/ac*'], function (response, pageContext) {
+  window.onRequest(['*://www.acfun.cn/v/ac*'], function (response, pageContext) {
     const html = new TextDecoder('utf-8').decode(response);
     const pageDom = (new DOMParser()).parseFromString(html, 'text/html');
     const scriptTags = Array.from(pageDom.querySelectorAll('script'));
@@ -15,8 +15,8 @@
     });
   });
 
-  window.onRequest(['http://danmu.aixifan.com/V4/*_*/*/*'], async function (response, pageContext, { url }) {
-    const vid = +(url.match(/http:\/\/danmu\.aixifan\.com\/V4\/(\d+)_/) || [])[1];
+  window.onRequest(['*://danmu.aixifan.com/V4/*_*/*/*'], async function (response, pageContext, { url }) {
+    const vid = +(url.match(/\w+:\/\/danmu\.aixifan\.com\/V4\/(\d+)_/) || [])[1];
     const { danmaku } = window.danmaku.parser.acfun(response);
     if (danmaku.length === 0) return;
     const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
