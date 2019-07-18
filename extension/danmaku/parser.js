@@ -106,7 +106,7 @@
 
     /**
      * @param {string|ArrayBuffer} content
-     * @return {{ cid: number, danmaku: Array<Danmaku> }}
+     * @return {{ danmaku: Array<Danmaku> }}
      */
     parser.acfun = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
@@ -122,6 +122,29 @@
           size: +size,
           bottom: false,
           uuid,
+        };
+      }).filter(danmakuFilter);
+      return { danmaku };
+    };
+
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ danmaku: Array<Danmaku> }}
+     */
+    parser.acfun_new = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const data = JSON.parse(text);
+      const danmaku = data.added.map(danmu => {
+        const { position, color, mode, size, body, danmakuId } = danmu;
+        return {
+          text: body,
+          time: position / 1000,
+          color: parseRgb256IntegerColor(+color),
+          // not sure if changed from V4, copy-pasted for now
+          mode: [null, 'RTL', null, null, 'BOTTOM', 'TOP'][mode],
+          size: +size,
+          bottom: false,
+          danmuId: danmakuId,
         };
       }).filter(danmakuFilter);
       return { danmaku };
