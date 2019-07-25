@@ -108,7 +108,7 @@
      * @param {string|ArrayBuffer} content
      * @return {{ danmaku: Array<Danmaku> }}
      */
-    parser.acfun = function (content) {
+    parser.acfun_v4 = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
       const data = JSON.parse(text);
       const list = data.reduce((x, y) => x.concat(y), []);
@@ -131,7 +131,7 @@
      * @param {string|ArrayBuffer} content
      * @return {{ danmaku: Array<Danmaku> }}
      */
-    parser.acfun_new = function (content) {
+    parser.acfun = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
       const data = JSON.parse(text);
       const danmaku = data.added.map(danmu => {
@@ -140,7 +140,6 @@
           text: body,
           time: position / 1000,
           color: parseRgb256IntegerColor(+color),
-          // not sure if changed from V4, copy-pasted for now
           mode: [null, 'RTL', null, null, 'BOTTOM', 'TOP'][mode],
           size: +size,
           bottom: false,

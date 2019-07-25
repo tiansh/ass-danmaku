@@ -33,7 +33,7 @@
 
   window.onRequest(['*://danmu.aixifan.com/V4/*_*/*/*'], async function (response, pageContext, { url }) {
     const vid = +(url.match(/\w+:\/\/danmu\.aixifan\.com\/V4\/(\d+)_/) || [])[1];
-    const { danmaku } = window.danmaku.parser.acfun(response);
+    const { danmaku } = window.danmaku.parser.acfun_v4(response);
     if (danmaku.length === 0) return;
     const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
     const danmakuItem = danmakuList.find(({ id }) => id === `acfun-${vid}`);
@@ -54,8 +54,8 @@
   });
 
   window.onRequest(['https://www.acfun.cn/rest/pc-direct/new-danmaku/poll'], async function (response, pageContext, { url, requestBody }) {
-    const vid = requestBody.formData['videoId'][0];
-    const { danmaku } = window.danmaku.parser.acfun_new(response);
+    const vid = requestBody.formData.videoId[0];
+    const { danmaku } = window.danmaku.parser.acfun(response);
     if (danmaku.length === 0) return;
     const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
     const danmakuItem = danmakuList.find(({ id }) => id === `acfun-new-${vid}`);
