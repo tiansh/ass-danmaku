@@ -6,9 +6,12 @@
     const scriptTags = Array.from(pageDom.querySelectorAll('script'));
     const script = scriptTags.find(script => (
       /^var pageInfo = \{.*}$/.test(script.textContent) ||
-      /window\.videoInfo = \{.*};$/.test(script.textContent)
+      /window\.videoInfo = \{.*};$/.test(script.textContent) || 
+      /window\.pageInfo = window\.videoInfo =/.test(script.textContent)
     ));
-    const data = JSON.parse(script.textContent.match(/({.*})/)[1]);
+    let data = null;
+    try { data = JSON.parse(script.textContent.match(/({.*})/)[1]); }
+    catch { data = JSON.parse(JSON.parse('"'+script.textContent.match(/({.*})/)[1]+'"')); }
     const { title } = data;
     const vidTitle = pageContext.metaInfo.vidTitle = pageContext.metaInfo.vidTitle || new Map();
     data.videoList.forEach(({ id, title: part }) => {
@@ -55,7 +58,7 @@
 
   window.onRequest(['https://www.acfun.cn/rest/pc-direct/new-danmaku/poll'], async function (response, pageContext, { url, requestBody }) {
     const vid = requestBody.formData.videoId[0];
-    const { danmaku } = window.danmaku.parser.acfun(response);
+    const { danmaku } = window.danmaku.parser.acfun_poll(response);
     if (danmaku.length === 0) return;
     const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
     const danmakuItem = danmakuList.find(({ id }) => id === `acfun-new-${vid}`);
@@ -69,6 +72,28 @@
       const name = 'A' + vid + (title ? ' - ' + title : '');
       danmakuList.push({
         id: `acfun-new-${vid}`,
+        meta: { name, url },
+        content: danmaku,
+      });
+    }
+  }, { includeRequestBody: true });
+
+  window.onRequest(['https://www.acfun.cn/rest/pc-direct/new-danmaku/list'], async function (response, pageContext, { url, requestBody }) {
+    const vid = requestBody.formData.resourceId[0];
+    const { danmaku } = window.danmaku.parser.acfun(response);
+    if (danmaku.length === 0) return;
+    const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
+    const danmakuItem = danmakuList.find(({ id }) => id === `acfun-list-${vid}`);
+    if (danmakuItem) {
+      const danmakuMap = new Map();
+      danmakuItem.content.concat(danmaku).forEach(danmaku => danmakuMap.set(danmaku.danmuId, danmaku));
+      danmakuItem.content = [...danmakuMap.values()];
+    } else {
+      const vidTitle = pageContext.metaInfo.vidTitle;
+      const title = vidTitle && vidTitle.get(vid);
+      const name = 'A' + vid + (title ? ' - ' + title : '');
+      danmakuList.push({
+        id: `acfun-list-${vid}`,
         meta: { name, url },
         content: danmaku,
       });

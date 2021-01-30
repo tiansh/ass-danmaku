@@ -131,11 +131,33 @@
      * @param {string|ArrayBuffer} content
      * @return {{ danmaku: Array<Danmaku> }}
      */
-    parser.acfun = function (content) {
+    parser.acfun_poll = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
       const data = JSON.parse(text);
       const danmaku = data.added.map(danmu => {
         const { position, color, mode, size, body, danmakuId } = danmu;
+        return {
+          text: body,
+          time: position / 1000,
+          color: parseRgb256IntegerColor(+color),
+          mode: [null, 'RTL', null, null, 'BOTTOM', 'TOP'][mode],
+          size: +size,
+          bottom: false,
+          danmuId: danmakuId,
+        };
+      }).filter(danmakuFilter);
+      return { danmaku };
+    };
+
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ danmaku: Array<Danmaku> }}
+     */
+    parser.acfun = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const data = JSON.parse(text);
+      const danmaku = data.danmakus.map(danmaku => {
+        const { position, color, mode, size, body, danmakuId } = danmaku;
         return {
           text: body,
           time: position / 1000,
