@@ -34,4 +34,20 @@
     });
   });
 
+  window.onRequest(['https://api.bilibili.com/x/v2/dm/web/seg.so?*'], async function (response, pageContext, { url }) {
+    const cid = new URL(url).searchParams.get('oid');
+    const { danmaku } = window.danmaku.parser.bilibili(response);
+    if (danmaku.length === 0) return;
+    const { tabId } = pageContext;
+    const cidTitle = pageContext.metaInfo.cidTitle;
+    const title = await (cidTitle && cidTitle.get(cid) || getPageTitle(tabId));
+    const name = 'B' + cid + (title ? ' - ' + title : '');
+    const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
+    danmakuList.push({
+      id: `bilibili-${cid}`,
+      meta: { name, url },
+      content: danmaku,
+    });
+  });
+
 }());

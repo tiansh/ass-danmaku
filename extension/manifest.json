@@ -20,6 +20,7 @@
 
   "background": {
     "scripts": [
+      "lib/pbf@3.0.5/pbf.js",
       "background/main.js",
       "font/font.js",
       "options/ext_options.js",
