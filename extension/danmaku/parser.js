@@ -110,6 +110,7 @@
      */
     parser.bilibili = function (content) {
       const PbfTypes = function PbfTypes() {
+        'use strict';
         const self = this;
         /*
         message DmSegMobileReply {
@@ -198,7 +199,7 @@
         const { progress, mode, fontsize, color, content, pool } = item;
         return {
           text: content,
-          time: progress,
+          time: progress / 1000,
           mode: [null, 'RTL', 'RTL', 'RTL', 'BOTTOM', 'TOP'][mode],
           size: fontsize,
           color: parseRgb256IntegerColor(color),

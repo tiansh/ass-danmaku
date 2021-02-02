@@ -12,7 +12,7 @@ This extension do not send or modify any network request. Your danmaku file is c
 
 ### Open Source Credit
 
-Parser for bilibili use [pdf](https://github.com/mapbox/pbf) project. For more details of its license, see license file in lib folder.
+Parser for bilibili use [mapbox/pbf](https://github.com/mapbox/pbf) project. For more details of its license, see license file in lib folder.
 
 ### License
 
