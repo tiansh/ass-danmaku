@@ -116,7 +116,7 @@
         message DmSegMobileReply {
           repeated DanmakuElem elems = 1;
         }
-        
+
         message DanmakuElem {
           required int64 id = 1;
           required int32 progress = 2;
@@ -193,6 +193,7 @@
       };
       const types = new PbfTypes();
 
+      /* global Pbf */
       const pbf = new Pbf(new Uint8Array(content));
       const data = types.DmSegMobileReply.read(pbf);
       const danmaku = data.elems.map(item => {

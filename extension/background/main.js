@@ -3,10 +3,10 @@
   /**
    * @typedef TabId
    * @typedef {{ id: string, meta: Object, content: Object }} DanmakuInfo
-   * @typedef {{ tabId: TabId, danmakuList: ?Array.<DanmakuInfo>, metaInfo: Object }} PageContent
+   * @typedef {{ tabId: TabId, danmakuList: ?Array.<DanmakuInfo>, metaInfo: Object }} PageContext
    */
 
-  /** @type {Map<TabId, PageContent>} */
+  /** @type {Map<TabId, PageContext>} */
   const context = new Map();
   /** @type {Map<string, Function>} */
   const exported = new Map();
@@ -33,15 +33,15 @@
   };
 
   /**
-   * @callback onRequestCallback
+   * @callback OnRequestCallback
    * @param {ArrayBuffer} response
-   * @param {PageContent} pageContent
+   * @param {PageContext} pageContext
    */
 
   /**
    *
    * @param {Array.<string>} match
-   * @param {Function.<ArrayBuffer, Object>} callback
+   * @param {OnRequestCallback} callback
    */
   const onRequest = function (match, callback, { includeRequestBody = false } = {}) {
     browser.webRequest.onBeforeRequest.addListener(details => {
