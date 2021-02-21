@@ -62,18 +62,18 @@
     const danmakuList = pageContext.danmakuList = pageContext.danmakuList || [];
     const id = `bilibili-pb-${cid}`;
     let danmakuItem = pendingList.find(item => item.id === id);
-    if (!danmakuItem || !danmakuItem.meta) {
-      danmakuItem = {
-        id,
-        meta: { name, url: [url] },
-        content: danmaku,
-        received: 1,
-      };
+    if (!danmakuItem) {
+      danmakuItem = { id };
       pendingList.push(danmakuItem);
+    }
+    if (!danmakuItem.meta) {
+      danmakuItem.meta = { name, url: [url] };
+      danmakuItem.received = 1;
+      danmakuItem.content = danmaku;
     } else {
-      danmakuItem.content.push(...danmaku);
       danmakuItem.meta.url.push(url);
       danmakuItem.received++;
+      danmakuItem.content.push(...danmaku);
     }
     danmakuList.push(...checkFinish(pendingList));
   });
