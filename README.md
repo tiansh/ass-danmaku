@@ -2,7 +2,9 @@
 
 [Get it from AMO](https://addons.mozilla.org/en-US/firefox/addon/ass-danmaku/)
 
-Download danmaku (video comments) in ASS format from AcFun, bilibili, and, Niconico. Watch video on supported site, and danmaku download button will appear on the right of address bar.
+Download danmaku / comments in ASS format from AcFun, bilibili, and, Niconico. Watch video on supported site, and danmaku download button will appear on the right of address bar.
+
+Due to limit of implementation, to download from bilibili, expand danmaku list first.
 
 ### Privacy
 
