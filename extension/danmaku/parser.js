@@ -327,6 +327,40 @@
       return { danmaku };
     };
 
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ danmaku: Array<Danmaku> }}
+     */
+    parser.himawari = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const data = new DOMParser().parseFromString(text, 'text/xml');
+      const danmakuType1 = Array.from(data.querySelectorAll('c:not([deleted])')).map(c => {
+        const p = c.getAttribute('p');
+        const [vpos, date, no, user_id, ng_cnt, group_id, mail] = p.split(',');
+        return { vpos, date_1: date, no, user_id, ng_cnt, group_id, mail, text: c.textContent };
+      });
+      const danmakuType2 = Array.from(data.querySelectorAll('chat:not([deleted])')).map(c => {
+        const vpos = c.getAttribute('vpos');
+        const date = c.getAttribute('date');
+        const no = c.getAttribute('no');
+        const user_id = c.getAttribute('user_id');
+        const mail = c.getAttribute('mail');
+        return { vpos, date_2: date, no, user_id, mail, text: c.textContent };
+      });
+      /** @type {Array<Danmaku>} */
+      const danmaku = danmakuType1.concat(danmakuType2).map(({ vpos, text }) => {
+        return {
+          text,
+          time: Number.parseInt(vpos, 36) / 100,
+          mode: 'RTL',
+          size: 24,
+          color: { r: 255, g: 255, b: 255 },
+          bottom: false,
+        };
+      }).filter(danmakuFilter);
+      return { danmaku };
+    };
+
     return parser;
   }());
 
