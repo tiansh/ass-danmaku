@@ -1,8 +1,7 @@
 ; (function () {
 
   const getPageTitle = async tabId => (await browser.tabs.get(tabId)).title;
-
-  window.onRequest(['*://nmsg.nicovideo.jp/api.json'], async function (response, pageContext, { url }) {
+  window.onRequest(['*://nvcomment.nicovideo.jp/legacy/api.json'], async function (response, pageContext, { url }) {
     const { thread, danmaku } = window.danmaku.parser.niconico(response);
     if (danmaku.length === 0) return;
     const { tabId } = pageContext;
