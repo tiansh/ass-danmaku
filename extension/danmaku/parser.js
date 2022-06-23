@@ -283,18 +283,22 @@
      */
     parser.niconico = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
-      const data = JSON.parse(text);
-      const list = data.map(item => item.chat).filter(x => x);
-      const { thread } = list.find(comment => comment.thread);
+      const mainJson = JSON.parse(text);
+      var list = [];
+      mainJson.data.threads.forEach(thread => {
+        list = list.concat(thread.comments);
+      });
+      const { thread } = "comments";
       const danmaku = list.map(comment => {
-        if (!comment.content || !(comment.vpos >= 0) || !comment.no) return null;
-        const { vpos, mail = '', content, no } = comment;
+        if (!comment.body || !(comment.vposMs >= 0) || !comment.no) return null;
+        const { vposMs, commands, body, no } = comment;
+        const commandString = commands.join(' ');
         return {
-          text: content,
-          time: vpos / 100,
-          color: parseNiconicoColor(mail),
-          mode: parseNiconicoMode(mail),
-          size: parseNiconicoSize(mail),
+          text: body,
+          time: vposMs / 1000,
+          color: parseNiconicoColor(commandString),
+          mode: parseNiconicoMode(commandString),
+          size: parseNiconicoSize(commandString),
           bottom: false,
           id: no,
         };
