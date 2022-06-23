@@ -288,7 +288,7 @@
       mainJson.data.threads.forEach(thread => {
         list = list.concat(thread.comments);
       });
-      const { thread } = "comments";
+      const thread = mainJson.data.globalComments[0].id;
       const danmaku = list.map(comment => {
         if (!comment.body || !(comment.vposMs >= 0) || !comment.no) return null;
         const { vposMs, commands, body, no } = comment;
