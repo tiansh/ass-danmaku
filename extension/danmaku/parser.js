@@ -40,7 +40,7 @@
       return { r, g, b };
     };
 
-    const parseNiconicoColor = mail => {
+    const parseNiconicoColor = commands => {
       const colorTable = {
         red: { r: 255, g: 0, b: 0 },
         pink: { r: 255, g: 128, b: 128 },
@@ -53,8 +53,7 @@
         black: { r: 0, g: 0, b: 0 },
       };
       const defaultColor = { r: 255, g: 255, b: 255 };
-      const line = mail.toLowerCase().split(/\s+/);
-      const color = Object.keys(colorTable).find(color => line.includes(color));
+      const color = Object.keys(colorTable).find(color => commands.includes(color));
       return color ? colorTable[color] : defaultColor;
     };
 
@@ -64,17 +63,15 @@
       return { r, g, b };
     };
 
-    const parseNiconicoMode = mail => {
-      const line = mail.toLowerCase().split(/\s+/);
-      if (line.includes('ue')) return 'TOP';
-      if (line.includes('shita')) return 'BOTTOM';
+    const parseNiconicoMode = commands => {
+      if (commands.includes('ue')) return 'TOP';
+      if (commands.includes('shita')) return 'BOTTOM';
       return 'RTL';
     };
 
-    const parseNiconicoSize = mail => {
-      const line = mail.toLowerCase().split(/\s+/);
-      if (line.includes('big')) return 36;
-      if (line.includes('small')) return 16;
+    const parseNiconicoSize = commands => {
+      if (commands.includes('big')) return 36;
+      if (commands.includes('small')) return 16;
       return 25;
     };
 
@@ -281,24 +278,46 @@
      * @param {string|ArrayBuffer} content
      * @return {{ cid: number, danmaku: Array<Danmaku> }}
      */
+    parser.niconico_legacy = function (content) {
+      const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
+      const data = JSON.parse(text);
+      const list = data.map(item => item.chat).filter(x => x);
+      const { thread } = list.find(comment => comment.thread);
+      const danmaku = list.map(comment => {
+        if (!comment.content || !(comment.vpos >= 0) || !comment.no) return null;
+        const { vpos, mail = '', content, no } = comment;
+        const commands = mail.toLowerCase().split(/\s+/);
+        return {
+          text: content,
+          time: vpos / 100,
+          color: parseNiconicoColor(commands),
+          mode: parseNiconicoMode(commands),
+          size: parseNiconicoSize(commands),
+          bottom: false,
+          id: no,
+        };
+      }).filter(danmakuFilter);
+      return { thread, danmaku };
+    };
+
+    /**
+     * @param {string|ArrayBuffer} content
+     * @return {{ cid: number, danmaku: Array<Danmaku> }}
+     */
     parser.niconico = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
-      const mainJson = JSON.parse(text);
-      var list = [];
-      mainJson.data.threads.forEach(thread => {
-        list = list.concat(thread.comments);
-      });
-      const thread = mainJson.data.globalComments[0].id;
-      const danmaku = list.map(comment => {
+      const data = JSON.parse(text).data;
+      const comments = data.threads.reduce((list, thread) => list.concat(thread.comments), []);
+      const thread = data.globalComments[0].id;
+      const danmaku = comments.map(comment => {
         if (!comment.body || !(comment.vposMs >= 0) || !comment.no) return null;
         const { vposMs, commands, body, no } = comment;
-        const commandString = commands.join(' ');
         return {
           text: body,
           time: vposMs / 1000,
-          color: parseNiconicoColor(commandString),
-          mode: parseNiconicoMode(commandString),
-          size: parseNiconicoSize(commandString),
+          color: parseNiconicoColor(commands),
+          mode: parseNiconicoMode(commands),
+          size: parseNiconicoSize(commands),
           bottom: false,
           id: no,
         };
