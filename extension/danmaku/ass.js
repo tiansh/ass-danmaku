@@ -60,20 +60,20 @@
 
     // Set fontsize
     let defaultFontSize;
-    const lineFontSize = ({ size }) => {
-      if (size === defaultFontSize) return '';
-      return `\\fs${size}`;
+    const lineFontSize = ({ fontSize }) => {
+      if (fontSize === defaultFontSize) return '';
+      return `\\fs${fontSize}`;
     };
     const getCommonFontSize = list => {
       const count = new Map();
       let commonCount = 0, common = 1;
-      list.forEach(({ size }) => {
+      list.forEach(({ fontSize }) => {
         let value = 1;
-        if (count.has(size)) value = count.get(size) + 1;
-        count.set(size, value);
+        if (count.has(fontSize)) value = count.get(fontSize) + 1;
+        count.set(fontSize, value);
         if (value > commonCount) {
           commonCount = value;
-          common = size;
+          common = fontSize;
         }
       });
       defaultFontSize = common;
