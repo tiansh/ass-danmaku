@@ -50,7 +50,7 @@
     return finished;
   };
 
-  window.onRequest(['https://api.bilibili.com/x/v2/dm/web/seg.so?*'], async function (response, pageContext, { url }) {
+  window.onRequest(['https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?*'], async function (response, pageContext, { url }) {
     const cid = new URL(url).searchParams.get('oid');
     const { danmaku } = window.danmaku.parser.bilibili(response);
     if (danmaku.length === 0) return;
@@ -144,4 +144,3 @@
   });
 
 }());
-
