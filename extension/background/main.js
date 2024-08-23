@@ -80,6 +80,13 @@
     }, { urls: match }, ['blocking'].concat(includeRequestBody ? ['requestBody'] : []));
   };
 
+  const redirect = function(match, { redirector = url => url } = {}) {
+    browser.webRequest.onBeforeRequest.addListener(details => {
+      const { url } = details;
+      return { redirectUrl: redirector(url) };
+    }, { urls: match }, ['blocking']);
+  };
+
   const hidePageAction = tabId => {
     browser.tabs.get(tabId).then(() => {
       browser.pageAction.hide(tabId);
@@ -150,7 +157,6 @@
   });
 
   window.onRequest = onRequest;
-
+  window.redirect = redirect;
 
 }());
-

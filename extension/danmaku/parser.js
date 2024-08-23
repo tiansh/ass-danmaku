@@ -332,7 +332,7 @@
     parser.bahamut = function (content) {
       const text = typeof content === 'string' ? content : new TextDecoder('utf-8').decode(content);
       const list = JSON.parse(text);
-      const danmaku = list.map(comment => {
+      const danmaku = list.data.danmu.map(comment => {
         if (!comment) return null;
         const { text, time, color, position, size } = comment;
         if (!text) return null;
